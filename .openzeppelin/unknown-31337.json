@@ -2,23 +2,8 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      "txHash": "0x20e1bff17180920cd74ed612520c396a2f7df747b7491e1ab2c998171fc03015",
-      "kind": "uups"
-    },
-    {
       "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
       "txHash": "0x9ada5a65393c67fd893ccd9cb45760845a2f76fafb46995d8fbd49ede1ab5637",
-      "kind": "uups"
-    },
-    {
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x190d674a95088cd1fadf000d2163f3d17ee109bd41f8eb18c831706009aca57d",
-      "kind": "uups"
-    },
-    {
-      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      "txHash": "0xd2265684bbe7e8b61359aaa5e1e15afcd7f75a0bba3cd6273b9e96860d024504",
       "kind": "uups"
     },
     {
@@ -32,18 +17,58 @@
       "kind": "uups"
     },
     {
-      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      "txHash": "0x388e0c7e5e2c2d2ac084853075153ca94273c02e55eacb107b76a661404fcd95",
-      "kind": "uups"
-    },
-    {
       "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
       "txHash": "0xc4c87fb5ad769b45076d88e69f781fdd739a123557f450592bb0e38aea092acb",
       "kind": "uups"
     },
     {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "txHash": "0x139630f7ae5001adfbec64b4abead84607a692b3ffc02bc8a6de43c0aa6176cd",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      "txHash": "0xcfc57987a2345125a777453fe1e9baebef3a305ef32a01074f89db76b61e69e0",
+      "kind": "uups"
+    },
+    {
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      "txHash": "0x528775bc0dc7d8ea2d3c6ebd888cd8c7f7bac7d02b9acfe1781c357086fc0646",
+      "kind": "uups"
+    },
+    {
+      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+      "txHash": "0x41cc6d5567bf88f80cc17c76c127d1f3bc15e690b63c8cd284f89a0e26d20439",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "txHash": "0xc69d416607c0b9f9bbba19b29b5cdb69ed142f09bbd413637261f24af5c58f41",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      "txHash": "0xc64299831ac1f6ed749d0498f2324a842386046bc47c44acde3a2867dc31a595",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
+      "txHash": "0xa88030292addcfcb02abc3e67eb42858718583e43ed3a7ca9c6b3bba6687a518",
+      "kind": "uups"
+    },
+    {
+      "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44",
+      "txHash": "0xd0087f0eb6a374858efbeef1c8ab9eb24efd3b557858cc5d7c96abb791f236ad",
+      "kind": "uups"
+    },
+    {
+      "address": "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F",
+      "txHash": "0x207229bed0d75cf01482ee83e421e378b76a13fd57c81522a718b5acb62eb70e",
+      "kind": "uups"
+    },
+    {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0x78778e2162bdb3f33ae4008831cd192a4992b652bf35807ff237f95bb716388a",
+      "txHash": "0x2844bdea6d3b4872dd0ee4305507d81c72b76eee225f2b036f4b4988bc28a647",
       "kind": "uups"
     }
   ],
@@ -670,10 +695,11 @@
         }
       }
     },
-    "eb9faba05aa81070d5abffa3067eb8d5fcea784795b07b1268670af2b5e7d48c": {
+    "dbcbc8f6ba2a479c00f357642325097c1e83d4c783cddfb1eb25a017cec09d1d": {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      "txHash": "0xce2fd43d6217c0adee1a990a578e6a67b1d1da0acf1d91826a008a01a7a0fd02",
+      "txHash": "0x72ab1a6468d62b5e1d87fa21121ba9ecf700e773189e10c81dfdcdbcf43ae4dc",
       "layout": {
+        "solcVersion": "0.8.12",
         "storage": [
           {
             "label": "_initialized",
@@ -861,15 +887,15 @@
             "src": "contracts/CanvasGame.sol:24"
           },
           {
-            "label": "_tableland",
+            "label": "_baseURIString",
             "offset": 0,
             "slot": "502",
-            "type": "t_contract(ITablelandTables)3306",
+            "type": "t_string_storage",
             "contract": "CanvasGame",
-            "src": "contracts/CanvasGame.sol:25"
+            "src": "contracts/CanvasGame.sol:26"
           },
           {
-            "label": "_baseURIString",
+            "label": "_metadataTable",
             "offset": 0,
             "slot": "503",
             "type": "t_string_storage",
@@ -877,36 +903,28 @@
             "src": "contracts/CanvasGame.sol:27"
           },
           {
-            "label": "_metadataTable",
+            "label": "_metadataTableId",
             "offset": 0,
             "slot": "504",
-            "type": "t_string_storage",
+            "type": "t_uint256",
             "contract": "CanvasGame",
             "src": "contracts/CanvasGame.sol:28"
           },
           {
-            "label": "_metadataTableId",
+            "label": "_tablePrefix",
             "offset": 0,
             "slot": "505",
-            "type": "t_uint256",
+            "type": "t_string_storage",
             "contract": "CanvasGame",
             "src": "contracts/CanvasGame.sol:29"
           },
           {
-            "label": "_tablePrefix",
+            "label": "_externalURL",
             "offset": 0,
             "slot": "506",
             "type": "t_string_storage",
             "contract": "CanvasGame",
-            "src": "contracts/CanvasGame.sol:30"
-          },
-          {
-            "label": "_externalURL",
-            "offset": 0,
-            "slot": "507",
-            "type": "t_string_storage",
-            "contract": "CanvasGame",
-            "src": "contracts/CanvasGame.sol:33"
+            "src": "contracts/CanvasGame.sol:32"
           }
         ],
         "types": {
@@ -929,10 +947,6 @@
           "t_bool": {
             "label": "bool",
             "numberOfBytes": "1"
-          },
-          "t_contract(ITablelandTables)3306": {
-            "label": "contract ITablelandTables",
-            "numberOfBytes": "20"
           },
           "t_mapping(t_address,t_bool)": {
             "label": "mapping(address => bool)",

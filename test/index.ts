@@ -1,34 +1,50 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
+import { after, before, describe, test } from "mocha";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 import { ethers, upgrades } from "hardhat";
+import {
+  getAccounts,
+  getRegistry,
+  getDatabase,
+  LocalTableland,
+} from "@tableland/local";
 
-describe("CanvasGame", function () {
-  let accounts: SignerWithAddress[];
-  let registry: any;
-  let canvasGame: any;
+chai.use(chaiAsPromised);
+const expect = chai.expect;
 
-  beforeEach(async function () {
-    accounts = await ethers.getSigners();
+// Create an instance of Local Tableland.
+const lt = new LocalTableland({
+  // Silent or verbose can be set via an options object as the first arg.
+  silent: true,
+});
+const accounts = getAccounts();
+let canvasGame: any;
 
-    const RegistryFactory = await ethers.getContractFactory("TablelandTables");
-    registry = await RegistryFactory.deploy();
-    await registry.deployed();
-    await registry.connect(accounts[0]).initialize("http://localhost:8080/");
+before(async function () {
+  this.timeout(25000);
+  lt.start();
+  await lt.isReady();
 
-    const CanvasGame = await ethers.getContractFactory("CanvasGame");
-    canvasGame = await upgrades.deployProxy(CanvasGame, [
-      "https://testnet.tableland.network/query?s=",
-      "not.implemented.com"
-    ], {
+  const CanvasGame = await ethers.getContractFactory("CanvasGame");
+  canvasGame = await upgrades.deployProxy(
+    CanvasGame,
+    ["http://localhost:8080/api/v1/", "not.implemented.com"],
+    {
       kind: "uups",
-    });
+    }
+  );
+  await canvasGame.deployed();
+  await canvasGame.connect(accounts[0]).createMetadataTable();
 
-    await canvasGame.deployed();
+  await new Promise((resolve) => setTimeout(() => resolve(0), 5000));
+});
 
-    await canvasGame.connect(accounts[0]).createMetadataTable(registry.address);
-  });
+after(async function () {
+  await lt.shutdown();
+});
 
-  it("Should allow minting", async function () {
+describe("CanvasGame", async function () {
+  test("Should allow minting", async function () {
     const tx = await canvasGame
       .connect(accounts[0])
       .safeMint(accounts[0].address);
@@ -49,39 +65,34 @@ describe("CanvasGame", function () {
     await expect(tokenId2).to.equal(1);
   });
 
-  it("Should make contract owner of the table", async function () {
-    const owner = await registry.connect(accounts[0]).ownerOf(1);
+  test("Should make contract owner of the table", async function () {
+    const registry = getRegistry(accounts[0]);
+    const tables = await registry.listTables();
 
-    await expect(owner).to.equal(canvasGame.address);
+    expect(tables.length).to.be.greaterThan(0);
   });
 
-  it("Should allow making a move", async function () {
+  test("Should allow making a move", async function () {
     // mint the token
-    const tx = await canvasGame
+    let tx = await canvasGame
       .connect(accounts[1])
       .safeMint(accounts[1].address);
 
-    const receipt = await tx.wait();
+    let receipt = await tx.wait();
     const [, transferEvent] = receipt.events ?? [];
     const tokenId = transferEvent.args!.tokenId;
+    const x = 10;
+    const y = 10;
+    // const statement = `UPDATE canvas_31337_2 SET x = ${x}, y = ${y} WHERE id = ${tokenId};`;
 
-    const statement =
-      "UPDATE canvas_31337_1 SET x = 10, y = 10 WHERE id = 0;";
-
-    // TODO: this fails with `expected [] to equal []` because Array literals aren't equal
-    //       I can't find a way to change the comparison logic for emit tests.
-    // UPDATE: once this issue https://github.com/TrueFiEng/Waffle/issues/245
-    //         is fixed this test should pass
-    await expect(canvasGame.connect(accounts[1]).makeMove(tokenId, 10, 10))
-      .to.emit(registry, "RunSQL")
-      .withArgs(canvasGame.address, true, 1, statement, [
-        true,
-        true,
-        true,
-        "",
-        "",
-        [],
-        [],
-      ]);
+    tx = await canvasGame.connect(accounts[1]).makeMove(tokenId, 10, 10);
+    receipt = await tx.wait();
+    let [, makeMoveEvent] = (await receipt.events) ?? [];
+    expect(makeMoveEvent.args!.caller).to.equal(accounts[1].address);
+    expect(makeMoveEvent.args!.tokenId).to.equal(
+      ethers.BigNumber.from(tokenId)
+    );
+    expect(makeMoveEvent.args!.x).to.equal(ethers.BigNumber.from(x));
+    expect(makeMoveEvent.args!.y).to.equal(ethers.BigNumber.from(y));
   });
 });

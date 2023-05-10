@@ -8,6 +8,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "@tableland/hardhat";
 
 dotenv.config();
 
@@ -21,9 +22,11 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-export const deployments: {[key: string]: string} = {
-  //"polygon-mumbai": ""
-  "ethereum-goerli": "0x4035ce0Df8440bd07BEf39306e4a8D785C0e13a1"
+// Used for contract verification & post-deploy moves
+export const deployments: { [key: string]: string } = {
+  localhost: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707", // If it's the first deployed contract, this is deterministic
+  maticmum: "0xEB5865EF3949585324c465eC9ba5C7777f455488", // Update this with your proxy contract deployment
+  // And/or, add a different network key
 };
 
 // You need to export an object to set up your config
@@ -34,25 +37,27 @@ const config: HardhatUserConfig = {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
   },
+  localTableland: {
+    silent: false,
+    verbose: false,
+  },
   etherscan: {
     apiKey: {
       // ethereum
       mainnet: process.env.ETHERSCAN_API_KEY || "",
-      goerli: process.env.ETHERSCAN_API_KEY || "",
-
+      sepolia: process.env.ETHERSCAN_API_KEY || "",
       // optimism
       optimisticEthereum: process.env.OPTIMISM_ETHERSCAN_API_KEY || "",
       optimisticKovan: process.env.OPTIMISM_ETHERSCAN_API_KEY || "",
-
       // polygon
-      polygon: process.env.POLYSCAN_API_KEY || "",
-      polygonMumbai: process.env.POLYSCAN_API_KEY || "",
+      polygon: process.env.POLYGONSCAN_API_KEY || "",
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
     },
   },
   networks: {
     // mainnets
     ethereum: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/${
+      url: `https://eth-mainnet.g.alchemy.com/v2/${
         process.env.ETHEREUM_API_KEY ?? ""
       }`,
       accounts:
@@ -79,41 +84,31 @@ const config: HardhatUserConfig = {
           : [],
     },
     // testnets
-    "ethereum-goerli": {
-      url: `https://eth-goerli.alchemyapi.io/v2/${
-        process.env.ETHEREUM_GOERLI_API_KEY ?? ""
+    sepolia: {
+      url: `https://eth-sepolia.g.alchemy.com/v2/${
+        process.env.ETHEREUM_SEPOLIA_API_KEY ?? ""
       }`,
       accounts:
-        process.env.ETHEREUM_GOERLI_PRIVATE_KEY !== undefined
-          ? [process.env.ETHEREUM_GOERLI_PRIVATE_KEY]
+        process.env.ETHEREUM_SEPOLIA_PRIVATE_KEY !== undefined
+          ? [process.env.ETHEREUM_SEPOLIA_PRIVATE_KEY]
           : [],
     },
-    "optimism-kovan": {
-      url: `https://opt-kovan.g.alchemy.com/v2/${
-        process.env.OPTIMISM_KOVAN_API_KEY ?? ""
+    "optimism-goerli": {
+      url: `https://opt-goerli.g.alchemy.com/v2/${
+        process.env.OPTIMISM_GOERLI_API_KEY ?? ""
       }`,
       accounts:
-        process.env.OPTIMISM_KOVAN_PRIVATE_KEY !== undefined
-          ? [process.env.OPTIMISM_KOVAN_PRIVATE_KEY]
+        process.env.OPTIMISM_GOERLI_PRIVATE_KEY !== undefined
+          ? [process.env.OPTIMISM_GOERLI_PRIVATE_KEY]
           : [],
     },
-    "polygon-mumbai": {
+    maticmum: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${
         process.env.POLYGON_MUMBAI_API_KEY ?? ""
       }`,
       accounts:
         process.env.POLYGON_MUMBAI_PRIVATE_KEY !== undefined
           ? [process.env.POLYGON_MUMBAI_PRIVATE_KEY]
-          : [],
-    },
-    // devnets
-    "optimism-kovan-staging": {
-      url: `https://opt-kovan.g.alchemy.com/v2/${
-        process.env.OPTIMISM_KOVAN_STAGING_API_KEY ?? ""
-      }`,
-      accounts:
-        process.env.OPTIMISM_KOVAN_STAGING_PRIVATE_KEY !== undefined
-          ? [process.env.OPTIMISM_KOVAN_STAGING_PRIVATE_KEY]
           : [],
     },
     hardhat: {
@@ -124,8 +119,8 @@ const config: HardhatUserConfig = {
     },
   },
   proxies: {
-    localhost: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
-  }
+    localhost: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+  },
 };
 
 declare module "hardhat/types/config" {
